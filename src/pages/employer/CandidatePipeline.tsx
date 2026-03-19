@@ -8,6 +8,16 @@ import { ChevronRight, User, Loader2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 const STAGES: ApplicationStatus[] = ["Applied", "Screening", "Interview", "Offered", "Hired", "Rejected"];
 
@@ -25,6 +35,7 @@ const CandidatePipeline = () => {
   const [applications, setApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedJobTitle, setSelectedJobTitle] = useState<string>("all");
+  const [appToDelete, setAppToDelete] = useState<{ id: string; name: string } | null>(null);
 
   useEffect(() => {
     if (!user) return;
@@ -87,16 +98,18 @@ const CandidatePipeline = () => {
     }
   };
 
-  const handleDeleteCandidate = async (appId: string, name: string) => {
-    if (!confirm(`Are you sure you want to remove ${name} from the pipeline?`)) return;
+  const handleDeleteConfirmed = async () => {
+    if (!appToDelete) return;
     
     try {
-      await deleteApplication(appId);
-      setApplications((prev) => prev.filter((a) => a.id !== appId));
-      toast.success(`${name} removed from pipeline`);
+      await deleteApplication(appToDelete.id);
+      setApplications((prev) => prev.filter((a) => a.id !== appToDelete.id));
+      toast.success(`${appToDelete.name} removed from pipeline`);
     } catch (err: any) {
       console.error("Delete error:", err);
       toast.error("Failed to delete candidate");
+    } finally {
+      setAppToDelete(null);
     }
   };
 
@@ -205,7 +218,7 @@ const CandidatePipeline = () => {
                         <button 
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleDeleteCandidate(app.id, name);
+                            setAppToDelete({ id: app.id, name });
                           }}
                           className="opacity-0 group-hover:opacity-100 p-2 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-xl transition-all active:scale-90"
                           title="Delete Candidate"
@@ -254,8 +267,35 @@ const CandidatePipeline = () => {
           );
         })}
       </div>
-    </div>
-  );
-};
+ 
+       <AlertDialog open={!!appToDelete} onOpenChange={(open) => !open && setAppToDelete(null)}>
+         <AlertDialogContent className="glass border-white/40 rounded-[2.5rem] p-8 max-w-[400px]">
+           <AlertDialogHeader>
+             <div className="flex justify-center mb-4">
+               <div className="w-16 h-16 rounded-full bg-destructive/10 flex items-center justify-center border border-destructive/20">
+                 <Trash2 className="h-8 w-8 text-destructive" />
+               </div>
+             </div>
+             <AlertDialogTitle className="text-center text-xl font-black">Remove Candidate?</AlertDialogTitle>
+             <AlertDialogDescription className="text-center text-muted-foreground font-medium">
+               Are you sure you want to remove <span className="text-foreground font-bold">{appToDelete?.name}</span> from the pipeline? This action cannot be undone.
+             </AlertDialogDescription>
+           </AlertDialogHeader>
+           <AlertDialogFooter className="flex-col sm:flex-col gap-2 mt-6">
+             <AlertDialogAction 
+               onClick={handleDeleteConfirmed}
+               className="w-full rounded-2xl bg-destructive hover:bg-destructive/90 text-white font-bold h-12"
+             >
+               Yes, Delete Candidate
+             </AlertDialogAction>
+             <AlertDialogCancel className="w-full rounded-2xl border-white/20 hover:bg-white/10 font-bold h-12">
+               Cancel
+             </AlertDialogCancel>
+           </AlertDialogFooter>
+         </AlertDialogContent>
+       </AlertDialog>
+     </div>
+   );
+ };
 
 export default CandidatePipeline;
