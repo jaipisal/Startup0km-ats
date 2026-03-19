@@ -103,6 +103,9 @@ const JobBoard = () => {
                     <span className="flex items-center gap-1"><MapPin className="h-3 w-3" />{job.location}</span>
                     <span className="bg-secondary rounded-full px-2 py-0.5 font-medium">{job.type}</span>
                     {job.salary && <span className="flex items-center gap-1"><DollarSign className="h-3 w-3" />{job.salary}</span>}
+                    {job.status === "Closed" && (
+                      <span className="bg-destructive/10 text-destructive text-[10px] font-black uppercase px-2 py-0.5 rounded-md border border-destructive/20">Closed</span>
+                    )}
                   </div>
                   <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">{job.description}</p>
                 </div>
@@ -110,6 +113,10 @@ const JobBoard = () => {
                   {hasApplied ? (
                     <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-success">
                       <CheckCircle2 className="h-4 w-4" /> Applied
+                    </span>
+                  ) : job.status === "Closed" ? (
+                    <span className="inline-flex items-center gap-1.5 text-xs font-bold text-muted-foreground opacity-60 uppercase">
+                      No Longer Accepting
                     </span>
                   ) : (
                     <Button size="sm" variant="gradient" disabled={isApplying} onClick={() => handleApply(job)}>
@@ -158,20 +165,24 @@ const JobBoard = () => {
                   ))}
                 </ul>
               </div>
-              {appliedJobIds.includes(selectedJob.id) ? (
-                <div className="flex items-center justify-center gap-2 text-success text-sm font-semibold py-3 bg-success/5 rounded-xl">
-                  <CheckCircle2 className="h-4 w-4" /> You've already applied
-                </div>
-              ) : (
-                <Button
-                  variant="gradient"
-                  className="w-full h-11"
-                  disabled={applying === selectedJob.id}
-                  onClick={() => { handleApply(selectedJob); setSelectedJob(null); }}
-                >
-                  <Sparkles className="h-4 w-4 mr-1" /> Apply Now
-                </Button>
-              )}
+               {appliedJobIds.includes(selectedJob.id) ? (
+                 <div className="flex items-center justify-center gap-2 text-success text-sm font-semibold py-3 bg-success/5 rounded-xl">
+                   <CheckCircle2 className="h-4 w-4" /> You've already applied
+                 </div>
+               ) : selectedJob.status === "Closed" ? (
+                 <div className="flex items-center justify-center gap-2 text-muted-foreground text-sm font-bold py-3 bg-muted/20 rounded-xl border border-dashed border-muted-foreground/20">
+                   This position is no longer accepting applications
+                 </div>
+               ) : (
+                 <Button
+                   variant="gradient"
+                   className="w-full h-11"
+                   disabled={applying === selectedJob.id}
+                   onClick={() => { handleApply(selectedJob); setSelectedJob(null); }}
+                 >
+                   <Sparkles className="h-4 w-4 mr-1" /> Apply Now
+                 </Button>
+               )}
             </div>
           </DialogContent>
         )}

@@ -212,21 +212,19 @@ const JobsManagement = () => {
               transition={{ delay: i * 0.05 }}
               className="group glass rounded-[2.5rem] p-7 hover:shadow-2xl hover:shadow-primary/5 transition-all duration-300 border-white/60 flex flex-col relative overflow-hidden h-full"
             >
-              {/* Status Badge */}
-              <div className="absolute top-7 right-7">
-                <button
-                  onClick={() => toggleStatus(job)}
-                  className={`text-[10px] font-black uppercase tracking-widest rounded-full px-3 py-1 border transition-all ${job.status === "Open" ? "bg-success/10 text-success border-success/20" : "bg-muted text-muted-foreground border-border"}`}
-                >
-                  {job.status}
-                </button>
-              </div>
-
-              <div className="flex items-start gap-5 mb-8">
-                <div className="h-14 w-14 rounded-[1.5rem] bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
-                  <Briefcase className="h-6 w-6 text-primary" />
+              <div className="flex flex-col gap-4 mb-8">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="h-14 w-14 rounded-[1.5rem] bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                    <Briefcase className="h-6 w-6 text-primary" />
+                  </div>
+                  <button
+                    onClick={() => toggleStatus(job)}
+                    className={`text-[10px] font-black uppercase tracking-widest rounded-full px-3 py-1 border transition-all ${job.status === "Open" ? "bg-success/10 text-success border-success/20" : "bg-muted text-muted-foreground border-border"}`}
+                  >
+                    {job.status}
+                  </button>
                 </div>
-                <div className="min-w-0 pr-12">
+                <div className="min-w-0">
                   <h3 className="font-display font-bold text-xl text-foreground truncate group-hover:text-primary transition-colors leading-tight">{job.title}</h3>
                   <div className="flex items-center gap-2 text-[11px] text-muted-foreground font-bold uppercase tracking-tighter mt-1.5">
                     <MapPin className="h-3 w-3" /> {job.location}
@@ -265,14 +263,25 @@ const JobsManagement = () => {
                     View Candidates
                   </Button>
                 </Link>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="rounded-2xl h-11 w-11 p-0 text-muted-foreground hover:text-destructive hover:bg-destructive/5 transition-all"
-                  onClick={() => handleDelete(job.id)}
-                >
-                  <Trash2 className="h-3.5 w-3.5" />
-                </Button>
+                <div className="flex gap-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className={`rounded-2xl h-11 w-11 p-0 transition-all ${job.status === "Open" ? "text-amber-500 hover:bg-amber-50" : "text-success hover:bg-emerald-50"}`}
+                    onClick={() => toggleStatus(job)}
+                    title={job.status === "Open" ? "Close Job" : "Open Job"}
+                  >
+                     {job.status === "Open" ? <Clock className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="rounded-2xl h-11 w-11 p-0 text-muted-foreground hover:text-destructive hover:bg-destructive/5 transition-all"
+                    onClick={() => handleDelete(job.id)}
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </Button>
+                </div>
               </div>
             </motion.div>
           ))
