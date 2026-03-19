@@ -152,16 +152,28 @@ const CandidatePipeline = () => {
 
                       {bio && <p className="text-[11px] text-muted-foreground leading-snug line-clamp-2 italic opacity-80">"{bio}"</p>}
                       
-                      {nextStage && stage !== "Rejected" && (
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="w-full justify-between text-[10px] h-9 font-bold rounded-2xl text-muted-foreground hover:text-primary hover:bg-primary/10 border border-transparent hover:border-primary/20 transition-all opacity-0 group-hover:opacity-100"
-                          onClick={() => moveToStage(app.id, nextStage)}
-                        >
-                          Next: {nextStage} <ChevronRight className="h-3 w-3" />
-                        </Button>
-                      )}
+                      <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-all">
+                        {nextStage && stage !== "Rejected" && stage !== "Hired" && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="flex-1 justify-between text-[10px] h-9 font-bold rounded-2xl text-muted-foreground hover:text-primary hover:bg-primary/10 border border-transparent hover:border-primary/20"
+                            onClick={() => moveToStage(app.id, nextStage)}
+                          >
+                            Next: {nextStage} <ChevronRight className="h-3 w-3" />
+                          </Button>
+                        )}
+                        {stage !== "Rejected" && stage !== "Hired" && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-[10px] h-9 font-bold rounded-2xl text-muted-foreground hover:text-destructive hover:bg-destructive/10 border border-transparent hover:border-destructive/20"
+                            onClick={() => moveToStage(app.id, "Rejected")}
+                          >
+                            Reject
+                          </Button>
+                        )}
+                      </div>
                     </motion.div>
                   );
                 })}
