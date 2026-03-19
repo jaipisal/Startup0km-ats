@@ -54,20 +54,30 @@ const CandidatePipeline = () => {
         prev.map((a) => (a.id === appId ? { ...a, status: newStatus } : a))
       );
       if (newStatus === "Hired") {
-        confetti({
-          particleCount: 150,
-          spread: 70,
-          origin: { y: 0.6 },
-          colors: ["#10b981", "#34d399", "#6ee7b7", "#ffffff"],
-        });
-        toast.success(`🎉 Congratulations! Candidate Hired!`, {
-          description: "The position has been successfully filled.",
-          duration: 5000,
+        // More dramatic confetti
+        const duration = 3 * 1000;
+        const animationEnd = Date.now() + duration;
+        const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+        const randomInRange = (min: number, max: number) => Math.random() * (max - min) + min;
+
+        const interval: any = setInterval(function() {
+          const timeLeft = animationEnd - Date.now();
+          if (timeLeft <= 0) return clearInterval(interval);
+
+          const particleCount = 50 * (timeLeft / duration);
+          confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
+          confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
+        }, 250);
+
+        toast.success(`🎉 HIRED!`, {
+          description: "Welcome to the team!",
+          duration: 4000,
         });
       } else if (newStatus === "Rejected") {
         toast.error(`Application Rejected`, {
-          description: "The candidate has been moved to the rejected list.",
-          icon: "😔",
+          description: "Moved to the rejected list.",
+          icon: "😞",
         });
       } else {
         toast.success(`Moved to ${newStatus}`);
@@ -149,11 +159,21 @@ const CandidatePipeline = () => {
                     <motion.div
                       key={app.id}
                       layout
-                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      initial={{ opacity: 0, y: 20, scale: 0.9 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.9, y: -20 }}
-                      transition={{ duration: 0.25, ease: "easeOut" }}
-                      className="group rounded-[1.8rem] glass border-white/60 p-4 space-y-3 shadow-sm hover:shadow-xl hover:shadow-primary/5 hover:translate-y-[-2px] transition-all duration-300"
+                      exit={{ 
+                        opacity: 0, 
+                        scale: 0.8, 
+                        y: app.status === "Rejected" ? 100 : -100,
+                        rotate: app.status === "Rejected" ? -5 : 5,
+                        filter: "blur(10px)"
+                      }}
+                      transition={{ 
+                        type: "spring",
+                        stiffness: 300,
+                        damping: 25
+                      }}
+                      className="group relative rounded-[1.8rem] glass border-white/60 p-4 space-y-3 shadow-sm hover:shadow-xl hover:shadow-primary/5 hover:translate-y-[-2px] transition-all duration-300"
                     >
                       <div className="flex items-start justify-between gap-2">
                         <div className="flex items-center gap-3 min-w-0">
@@ -193,7 +213,7 @@ const CandidatePipeline = () => {
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="text-[10px] h-9 font-bold rounded-2xl text-muted-foreground hover:text-destructive hover:bg-destructive/10 border border-transparent hover:border-destructive/20"
+                            className="text-[10px] h-9 px-4 font-black uppercase tracking-wider rounded-2xl text-muted-foreground hover:text-destructive hover:bg-destructive/10 border border-transparent hover:border-destructive/20 active:scale-95 transition-all"
                             onClick={() => moveToStage(app.id, "Rejected")}
                           >
                             Reject
