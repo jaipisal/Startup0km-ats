@@ -198,12 +198,12 @@ const CandidatePipeline = () => {
 
                       {bio && <p className="text-[11px] text-muted-foreground leading-snug line-clamp-2 italic opacity-80">"{bio}"</p>}
                       
-                      <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-all">
+                      <div className="flex flex-col gap-2 w-full opacity-0 group-hover:opacity-100 transition-all pointer-events-none group-hover:pointer-events-auto">
                         {nextStage && stage !== "Rejected" && stage !== "Hired" && (
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="flex-1 justify-between text-[10px] h-9 font-bold rounded-2xl text-muted-foreground hover:text-primary hover:bg-primary/10 border border-transparent hover:border-primary/20"
+                            className="w-full justify-between text-[10px] h-9 px-4 font-black uppercase tracking-wider rounded-2xl text-muted-foreground hover:text-primary hover:bg-primary/10 border border-transparent hover:border-primary/20 transition-all"
                             onClick={() => moveToStage(app.id, nextStage)}
                           >
                             Next: {nextStage} <ChevronRight className="h-3 w-3" />
@@ -213,10 +213,10 @@ const CandidatePipeline = () => {
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="text-[10px] h-9 px-4 font-black uppercase tracking-wider rounded-2xl text-muted-foreground hover:text-destructive hover:bg-destructive/10 border border-transparent hover:border-destructive/20 active:scale-95 transition-all"
+                            className="w-full text-[10px] h-9 font-black uppercase tracking-wider rounded-2xl text-muted-foreground hover:text-destructive hover:bg-destructive/10 border border-transparent hover:border-destructive/20 active:scale-95 transition-all"
                             onClick={() => moveToStage(app.id, "Rejected")}
                           >
-                            Reject
+                            Reject Candidate
                           </Button>
                         )}
                       </div>
