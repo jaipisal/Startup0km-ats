@@ -12,7 +12,7 @@ export interface Job {
   employerId: string;
 }
 
-export type ApplicationStatus = "Applied" | "Screening" | "Interview" | "Offered" | "Rejected";
+export type ApplicationStatus = "Applied" | "Screening" | "Interview" | "Offered" | "Hired" | "Rejected";
 
 export interface Application {
   id: string;

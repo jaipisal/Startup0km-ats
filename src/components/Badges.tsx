@@ -32,7 +32,8 @@ export const StatusBadge = ({ status }: StatusBadgeProps) => {
     Screening: "bg-primary/8 text-primary border-primary/15",
     Interview: "bg-warning/8 text-warning border-warning/15",
     Offered: "bg-success/8 text-success border-success/15",
-    Rejected: "bg-destructive/8 text-destructive border-destructive/15",
+    Rejected: "bg-destructive/10 text-destructive border-destructive/20",
+    Hired: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20",
   };
 
   return (

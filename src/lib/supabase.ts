@@ -53,7 +53,8 @@ export type ApplicationStatus =
   | "Screening"
   | "Interview"
   | "Offered"
-  | "Rejected";
+  | "Rejected"
+  | "Hired";
 
 export interface Application {
   id: string;

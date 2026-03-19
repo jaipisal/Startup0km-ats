@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS public.applications (
   job_id          UUID NOT NULL REFERENCES public.jobs(id) ON DELETE CASCADE,
   jobseeker_id    UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
   status          TEXT NOT NULL DEFAULT 'Applied'
-                  CHECK (status IN ('Applied', 'Screening', 'Interview', 'Offered', 'Rejected')),
+                  CHECK (status IN ('Applied', 'Screening', 'Interview', 'Offered', 'Rejected', 'Hired')),
   match_score     INTEGER DEFAULT 0 CHECK (match_score >= 0 AND match_score <= 100),
   applied_at      DATE NOT NULL DEFAULT CURRENT_DATE,
   created_at      TIMESTAMPTZ DEFAULT NOW(),

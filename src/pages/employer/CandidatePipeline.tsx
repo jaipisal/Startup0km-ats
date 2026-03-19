@@ -8,14 +8,15 @@ import { ChevronRight, User, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 
-const STAGES: ApplicationStatus[] = ["Applied", "Screening", "Interview", "Offered", "Rejected"];
+const STAGES: ApplicationStatus[] = ["Applied", "Screening", "Interview", "Offered", "Hired", "Rejected"];
 
 const stageColors: Record<ApplicationStatus, string> = {
   Applied: "from-muted-foreground/60 to-muted-foreground/40",
   Screening: "from-primary to-primary/70",
   Interview: "from-warning to-warning/70",
-  Offered: "from-success to-success/70",
-  Rejected: "from-destructive to-destructive/70",
+  Offered: "from-primary/60 to-primary/40",
+  Hired: "from-emerald-500/60 to-emerald-500/40",
+  Rejected: "from-destructive/60 to-destructive/40",
 };
 
 const CandidatePipeline = () => {
