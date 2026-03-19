@@ -6,7 +6,8 @@ import { MatchScoreBadge } from "@/components/Badges";
 import { Button } from "@/components/ui/button";
 import { ChevronRight, User, Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import confetti from "canvas-confetti";
 
 const STAGES: ApplicationStatus[] = ["Applied", "Screening", "Interview", "Offered", "Hired", "Rejected"];
 
@@ -52,7 +53,25 @@ const CandidatePipeline = () => {
       setApplications((prev) =>
         prev.map((a) => (a.id === appId ? { ...a, status: newStatus } : a))
       );
-      toast.success(`Moved to ${newStatus}`);
+      if (newStatus === "Hired") {
+        confetti({
+          particleCount: 150,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: ["#10b981", "#34d399", "#6ee7b7", "#ffffff"],
+        });
+        toast.success(`🎉 Congratulations! Candidate Hired!`, {
+          description: "The position has been successfully filled.",
+          duration: 5000,
+        });
+      } else if (newStatus === "Rejected") {
+        toast.error(`Application Rejected`, {
+          description: "The candidate has been moved to the rejected list.",
+          icon: "😔",
+        });
+      } else {
+        toast.success(`Moved to ${newStatus}`);
+      }
     } catch {
       toast.error("Failed to update status.");
     }
@@ -110,12 +129,18 @@ const CandidatePipeline = () => {
               </div>
 
               <div className="space-y-4 min-h-[500px] p-1">
-                {stageApps.length === 0 && (
-                  <div className="rounded-[2rem] border-2 border-dashed border-black/5 flex items-center justify-center py-10">
-                    <p className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest whitespace-nowrap">No Candidates</p>
-                  </div>
-                )}
-                {stageApps.map((app) => {
+                <AnimatePresence mode="popLayout">
+                  {stageApps.length === 0 && (
+                    <motion.div 
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="rounded-[2rem] border-2 border-dashed border-black/5 flex items-center justify-center py-10"
+                    >
+                      <p className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest whitespace-nowrap">No Candidates</p>
+                    </motion.div>
+                  )}
+                  {stageApps.map((app) => {
                   const nextStage = stageIdx < STAGES.length - 2 ? STAGES[stageIdx + 1] : null;
                   const name = app.profiles?.name ?? "Candidate";
                   const bio = app.profiles?.bio ?? "";
@@ -124,9 +149,10 @@ const CandidatePipeline = () => {
                     <motion.div
                       key={app.id}
                       layout
-                      initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
-                      transition={{ duration: 0.2 }}
+                      exit={{ opacity: 0, scale: 0.9, y: -20 }}
+                      transition={{ duration: 0.25, ease: "easeOut" }}
                       className="group rounded-[1.8rem] glass border-white/60 p-4 space-y-3 shadow-sm hover:shadow-xl hover:shadow-primary/5 hover:translate-y-[-2px] transition-all duration-300"
                     >
                       <div className="flex items-start justify-between gap-2">
@@ -177,6 +203,7 @@ const CandidatePipeline = () => {
                     </motion.div>
                   );
                 })}
+                </AnimatePresence>
               </div>
             </div>
           );
