@@ -144,7 +144,7 @@ const JobsManagement = () => {
               <Plus className="h-4 w-4 mr-2" /> Post New Job
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-xl rounded-[2.5rem] glass-strong border-white/40 shadow-2xl p-8">
+          <DialogContent className="max-w-xl max-h-[90vh] overflow-y-auto rounded-[2.5rem] glass-strong border-white/40 shadow-2xl p-8 modern-scrollbar">
             <DialogHeader>
               <DialogTitle className="font-display text-2xl font-bold">{editingJob ? "Edit Job" : "Post New Job"}</DialogTitle>
             </DialogHeader>

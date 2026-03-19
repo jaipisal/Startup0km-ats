@@ -230,6 +230,29 @@
   .text-balance {
     text-wrap: balance;
   }
+
+  /* Custom Modern Scrollbar */
+  .modern-scrollbar::-webkit-scrollbar {
+    width: 5px;
+  }
+  .modern-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .modern-scrollbar::-webkit-scrollbar-thumb {
+    background: hsl(var(--primary) / 0.15);
+    border-radius: 10px;
+  }
+  .modern-scrollbar:hover::-webkit-scrollbar-thumb {
+    background: hsl(var(--primary) / 0.3);
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
 @keyframes gradient-flow {
