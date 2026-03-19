@@ -182,7 +182,7 @@ export async function applyToJob(
 
 /** Delete an application (Employer cleanup) */
 export async function deleteApplication(id: string): Promise<void> {
-  const { error } = await supabase.from(\"applications\").delete().eq(\"id\", id);
+  const { error } = await supabase.from("applications").delete().eq("id", id);
   if (error) throw error;
 }
 
