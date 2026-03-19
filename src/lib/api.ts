@@ -180,6 +180,12 @@ export async function applyToJob(
   return data as Application;
 }
 
+/** Delete an application (Employer cleanup) */
+export async function deleteApplication(id: string): Promise<void> {
+  const { error } = await supabase.from(\"applications\").delete().eq(\"id\", id);
+  if (error) throw error;
+}
+
 /** Employer moves a candidate through hiring stages */
 export async function updateApplicationStatus(
   applicationId: string,

@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { fetchApplicationsForEmployer, updateApplicationStatus } from "@/lib/api";
+import { deleteApplication, fetchApplicationsForEmployer, updateApplicationStatus } from "@/lib/api";
 import { Application, ApplicationStatus } from "@/lib/supabase";
 import { MatchScoreBadge } from "@/components/Badges";
 import { Button } from "@/components/ui/button";
-import { ChevronRight, User, Loader2 } from "lucide-react";
+import { ChevronRight, User, Loader2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
@@ -84,6 +84,19 @@ const CandidatePipeline = () => {
       }
     } catch {
       toast.error("Failed to update status.");
+    }
+  };
+
+  const handleDeleteCandidate = async (appId: string, name: string) => {
+    if (!confirm(`Are you sure you want to remove ${name} from the pipeline?`)) return;
+    
+    try {
+      await deleteApplication(appId);
+      setApplications((prev) => prev.filter((a) => a.id !== appId));
+      toast.success(`${name} removed from pipeline`);
+    } catch (err: any) {
+      console.error("Delete error:", err);
+      toast.error("Failed to delete candidate");
     }
   };
 
@@ -187,6 +200,18 @@ const CandidatePipeline = () => {
                             )}
                           </div>
                         </div>
+
+                        {/* Hover Delete Button */}
+                        <button 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteCandidate(app.id, name);
+                          }}
+                          className="opacity-0 group-hover:opacity-100 p-2 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-xl transition-all active:scale-90"
+                          title="Delete Candidate"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
                       </div>
                       
                       <div className="flex items-center gap-2">
