@@ -277,8 +277,8 @@ const CandidatePipeline = () => {
                </div>
              </div>
              <AlertDialogTitle className="text-center text-xl font-black">Remove Candidate?</AlertDialogTitle>
-             <AlertDialogDescription className="text-center text-muted-foreground font-medium">
-               Are you sure you want to remove <span className="text-foreground font-bold">{appToDelete?.name}</span> from the pipeline? This action cannot be undone.
+             <AlertDialogDescription className="text-center text-foreground/70 font-medium">
+               Are you sure you want to remove <span className="text-foreground font-bold italic underline decoration-primary/30 tracking-tight">{appToDelete?.name}</span> from the pipeline? This action cannot be undone.
              </AlertDialogDescription>
            </AlertDialogHeader>
            <AlertDialogFooter className="flex-col sm:flex-col gap-2 mt-6">
