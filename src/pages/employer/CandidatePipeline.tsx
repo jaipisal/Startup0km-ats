@@ -228,10 +228,10 @@ const CandidatePipeline = () => {
                       </div>
                       
                       <div className="flex items-center gap-2">
-                        <div className="bg-accent/5 px-2 py-0.5 rounded-lg border border-accent/10">
-                           <span className="text-[10px] font-black text-accent">{app.match_score}%</span>
+                        <div className="bg-accent/10 px-3 py-1 rounded-xl border border-accent/20 shadow-sm shadow-accent/5">
+                           <span className="text-xs font-black text-accent">{app.match_score}%</span>
                         </div>
-                        <div className="text-[9px] font-bold text-muted-foreground opacity-60 uppercase">Match</div>
+                        <div className="text-[10px] font-black text-muted-foreground uppercase opacity-80 tracking-widest">Match Score</div>
                       </div>
 
                       {bio && <p className="text-[11px] text-muted-foreground leading-snug line-clamp-2 italic opacity-80">"{bio}"</p>}

@@ -165,3 +165,14 @@ CREATE POLICY "applications_update_employer"
 CREATE POLICY "applications_delete_jobseeker"
   ON public.applications FOR DELETE
   USING (auth.uid() = jobseeker_id);
+
+-- Employers can delete applications on their jobs (cleanup)
+CREATE POLICY "applications_delete_employer"
+  ON public.applications FOR DELETE
+  USING (
+    EXISTS (
+      SELECT 1 FROM public.jobs
+      WHERE jobs.id = applications.job_id
+        AND jobs.employer_id = auth.uid()
+    )
+  );
