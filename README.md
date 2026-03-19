@@ -3,7 +3,7 @@
 **A professional, AI-powered Applicant Tracking System (ATS) built for the Startup0km assignment.**  
 Built with **React 18 + Vite + TypeScript + Supabase (PostgreSQL)**.
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black)](https://your-app.vercel.app)
+[![Live Demo](https://startup0km-ats-elrm.vercel.app/)
 
 ---
 
